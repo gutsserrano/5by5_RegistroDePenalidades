@@ -1,16 +1,19 @@
-﻿namespace RegistroDePenalidades
+﻿using Microsoft.Data.SqlClient;
+using System.Data;
+
+namespace RegistroDePenalidades
 {
     internal class Program
     {        
         static void Main(string[] args)
         {
-            Menu();
+            var lst = ReadFile.GetData("C:\\teste_linq\\motoristas_habilitados.json");
+            InserirBD(lst);
+            Menu(lst);
         }
 
-        static void Menu()
+        static void Menu(List<PenalidadesAplicadas> lst)
         {
-            var lst = ReadFile.GetData("C:\\teste_linq\\motoristas_habilitados.json");
-
             int op;
             bool conversao;
 
@@ -56,6 +59,37 @@
                 }
                 Console.ReadKey();
             } while (true);
-        }   
+        }
+        
+        static void InserirBD(List<PenalidadesAplicadas> lst)
+        {
+            Banco conn = new Banco();
+            SqlConnection conexaosql = new SqlConnection(conn.Caminho());
+
+            try
+            {
+                conexaosql.Open();
+                foreach(var item in lst)
+                {
+                    SqlCommand cmd = new SqlCommand("[dbo].[InserirMotoristas]", conexaosql);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Cnpj", item.Cnpj));
+                    cmd.Parameters.Add(new SqlParameter("@RazaoSocial", item.RazaoSocial));
+                    cmd.Parameters.Add(new SqlParameter("@NomeMotorista", item.NomeMotorista));
+                    cmd.Parameters.Add(new SqlParameter("@Cpf", item.Cpf));
+                    cmd.Parameters.Add(new SqlParameter("@VigenciaCadastro", item.VigenciaCadastro));
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("\nMensagem da Exception:");
+                Console.WriteLine(e.ToString());
+            }
+            finally
+            {
+                conexaosql.Close();
+            }
+        }
     }
 }
