@@ -8,7 +8,6 @@ namespace RegistroDePenalidades
         static void Main(string[] args)
         {
             var lst = ReadFile.GetData("C:\\teste_linq\\motoristas_habilitados.json");
-            InserirBD(lst);
             Menu(lst);
         }
 
@@ -28,10 +27,11 @@ namespace RegistroDePenalidades
                     Console.WriteLine("3 - Lista com todos os registros de 2021");
                     Console.WriteLine("4 - Lista com todas as empresas LTDA");
                     Console.WriteLine("5 - Lista ordenada pela razão social");
+                    Console.WriteLine("6 - Carregar Lista no Banco de Dados");
                     Console.WriteLine("0 - Sair");
 
                     conversao = int.TryParse(Console.ReadLine(), out op);
-                } while (!conversao || (op < 0 || op > 5));
+                } while (!conversao || (op < 0 || op > 6));
 
                 switch (op)
                 {
@@ -53,6 +53,9 @@ namespace RegistroDePenalidades
                     case 5:
                         Console.WriteLine("\nOrdenar a lista de registros pela razao social");
                         Filters.PrintData(Filters.OrderByName(lst));
+                        break;
+                    case 6:
+                        InserirBD(lst);
                         break;
                     case 0:
                         return;
