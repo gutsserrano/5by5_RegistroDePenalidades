@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace RegistroDePenalidades
 {
@@ -26,5 +27,26 @@ namespace RegistroDePenalidades
         public static List<PenalidadesAplicadas> FilterByName(List<PenalidadesAplicadas> lista, string word) => lista.Where(l => l.RazaoSocial.Contains(word, StringComparison.OrdinalIgnoreCase)).ToList();
 
         public static List<PenalidadesAplicadas> OrderByName(List<PenalidadesAplicadas> lista) => lista.OrderBy(l => l.RazaoSocial).ToList();
+
+        public static string GenerateXML(List<PenalidadesAplicadas> lista)
+        {
+            if(lista.Count > 0)
+            {
+                var penalidadeAplicada = new XElement("Root", from data in lista
+                                                              select new XElement("motorista",
+                                                              new XElement("razao_social", data.RazaoSocial),
+                                                              new XElement("cnpj", data.Cnpj),
+                                                              new XElement("nome_motorista", data.NomeMotorista),
+                                                              new XElement("cpf", data.Cpf),
+                                                              new XElement("vigencia_do_cadastro", data.VigenciaCadastro)
+                                                              )
+                                                        );
+                return penalidadeAplicada.ToString();
+            }
+            else
+            {
+                return "Não existem registros";
+            }
+        }
     }
 }

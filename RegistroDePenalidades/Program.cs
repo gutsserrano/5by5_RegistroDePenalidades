@@ -28,10 +28,11 @@ namespace RegistroDePenalidades
                     Console.WriteLine("4 - Lista com todas as empresas LTDA");
                     Console.WriteLine("5 - Lista ordenada pela razão social");
                     Console.WriteLine("6 - Carregar Lista no Banco de Dados");
+                    Console.WriteLine("7 - Gerar XML");
                     Console.WriteLine("0 - Sair");
 
                     conversao = int.TryParse(Console.ReadLine(), out op);
-                } while (!conversao || (op < 0 || op > 6));
+                } while (!conversao || (op < 0 || op > 7));
 
                 switch (op)
                 {
@@ -56,6 +57,9 @@ namespace RegistroDePenalidades
                         break;
                     case 6:
                         InserirBD(lst);
+                        break;
+                    case 7:
+                        Console.WriteLine(Filters.GenerateXML(lst));
                         break;
                     case 0:
                         return;
