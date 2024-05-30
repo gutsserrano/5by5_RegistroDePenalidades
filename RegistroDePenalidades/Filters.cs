@@ -18,6 +18,15 @@ namespace RegistroDePenalidades
             }
         }
 
+        public static void PrintData(List<ControleProcessamento> lista)
+        {
+            foreach (var item in lista)
+            {
+                Console.WriteLine(item);
+                Console.WriteLine();
+            }
+        }
+
         public static int getCountRecords(List<PenalidadesAplicadas> lista) => lista.Count;
 
         public static List<PenalidadesAplicadas> FilterByCpfStart(List<PenalidadesAplicadas> lista, string start) => lista.Where(l => l.Cpf.Substring(0, start.Length) == start).ToList();

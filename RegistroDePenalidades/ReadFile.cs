@@ -20,5 +20,15 @@ namespace RegistroDePenalidades
             if (list != null) return list.PenalidadesAplicadas;
             return null;
         }
+
+        public static string GetJson(List<PenalidadesAplicadas> lst)
+        {
+            return JsonConvert.SerializeObject(lst);
+        }
+
+        public static string GetPartOfJson(PenalidadesAplicadas obj)
+        {
+            return JsonConvert.SerializeObject(obj);
+        }
     }
 }
